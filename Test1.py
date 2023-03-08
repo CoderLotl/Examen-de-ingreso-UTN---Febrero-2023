@@ -79,7 +79,7 @@ class App(customtkinter.CTk):
         iva_value = self.combobox_iva.get()
         value = self.txt_precio_articulo.get()
 
-        if value is not None and value.isnumeric() is True:
+        if value is not None and value.isnumeric() is True and value > 0:
             alert(title = "Success", message = "Agregado")
             if iva_value == "21":
                 self.lista_precios_21.append(float(value))
