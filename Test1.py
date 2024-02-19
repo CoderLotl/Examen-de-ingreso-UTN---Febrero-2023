@@ -79,16 +79,18 @@ class App(customtkinter.CTk):
         iva_value = self.combobox_iva.get()
         value = self.txt_precio_articulo.get()
 
-        if value is not None and value.isnumeric() is True and value > 0:
-            alert(title = "Success", message = "Agregado")
-            if iva_value == "21":
-                self.lista_precios_21.append(float(value))
+        try:
+            float_value = float(value)
+            if float_value > 0:
+                alert(title="Success", message="Agregado")
+                if iva_value == "21":
+                    self.lista_precios_21.append(float_value)
+                else:
+                    self.lista_precio_105.append(float_value)
             else:
-                self.lista_precio_105.append(float(value))
-
-        else:
-            alert(title = "ERROR", message = "ERROR - Ingrese un numero valido.")
-        pass
+                alert(title="ERROR", message="ERROR - Ingrese un numero valido mayor a 0.")
+        except ValueError:
+            alert(title="ERROR", message="ERROR - Ingrese un numero valido.")
         
     # Ultimo numero de DNI: 5
     def btn_mostrar_on_click(self):
@@ -137,15 +139,15 @@ class App(customtkinter.CTk):
         if counter_promedio1 != 0:
             promedio1 = promedio1 / counter_promedio1
 
-            final_message += f'Promedio de articulos SIN IVA para IVA 10.5%: ${promedio1}\n'
+            final_message += f'Promedio de articulos SIN IVA para IVA 10.5%: ${promedio1:.2f}\n\n'
             articulos_mayores = ""
             articulos_menores = ""
             for elemento in self.lista_precio_105:
                 counter += 1
                 if elemento > promedio1:                    
-                    articulos_mayores += f'Articulo {counter}: ${elemento}\n'
+                    articulos_mayores += f'Articulo {counter}: ${elemento:.2f}\n'
                 else:
-                    articulos_menores += f'Articulo {counter}: ${elemento}\n'
+                    articulos_menores += f'Articulo {counter}: ${elemento:.2f}\n'
 
             if articulos_mayores != "":
                 final_message += "Elementos cuyo valor con IVA es MAYOR al promedio:\n" + articulos_mayores
@@ -157,15 +159,15 @@ class App(customtkinter.CTk):
             promedio2 = promedio2 / counter_promedio2
             
             counter = 0
-            final_message += f'\n\n--------\n\nPromedio de articulos SIN IVA para IVA 21%: ${promedio2}\n'
+            final_message += f'\n\n--------\n\nPromedio de articulos SIN IVA para IVA 21%: ${promedio2:.2f}\n\n'
             articulos_mayores = ""
             articulos_menores = ""
             for elemento in self.lista_precios_21:
                 counter += 1
                 if elemento > promedio2:                    
-                    articulos_mayores += f'Articulo {counter}: ${elemento}\n'
+                    articulos_mayores += f'Articulo {counter}: ${elemento:.2f}\n'
                 else:
-                    articulos_menores += f'Articulo {counter}: ${elemento}\n'
+                    articulos_menores += f'Articulo {counter}: ${elemento:.2f}\n'
             if articulos_mayores != "":
                 final_message += "Elementos cuyo valor con IVA es MAYOR al promedio:\n" + articulos_mayores
             if articulos_menores != "":
